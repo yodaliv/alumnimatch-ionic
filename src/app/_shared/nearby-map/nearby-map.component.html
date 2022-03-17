@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar appAM>
+    <ion-buttons slot="start">
+      <ion-button mode="md" (click)="dismiss()">
+        <ion-icon slot="icon-only" name="md-arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Choose Your Location</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list *ngIf="data">
+    <ion-item *ngFor="let item of data">
+      <p>{{ item.name }}</p>
+      <p>{{ item.rating }}</p>
+      <p *ngIf="item.checkins">{{ item.checkins }}</p>
+    </ion-item>
+  </ion-list>
+  <agm-map
+    id="map"
+    *ngIf="center"
+    [latitude]="center.lat"
+    [longitude]="center.lng"
+    [zoom]="18"
+    [styles]="styles"
+    [mapTypeId]="'hybrid'"
+    [disableDefaultUI]="true"
+    [disableDoubleClickZoom]="true"
+    (mapReady)="mapReady($event)"
+    (mapDblClick)="mapDblClick($event)"
+  >
+    <agm-marker *ngFor="let m of markers; let i = index" [latitude]="m.lat" [longitude]="m.lng">
+      <agm-info-window> Window Content! </agm-info-window>
+    </agm-marker>
+    <agm-circle [latitude]="center.lat" [longitude]="center.lng" [radius]="radius" [fillColor]="'red'" [editable]="true"> </agm-circle>
+  </agm-map>
+</ion-content>
+
+<!-- Map Marker Popover -->
+<div id="infowindow">
+  <ion-grid *ngIf="firstclick">
+    <ion-row>
+      <ion-col>
+        <img *ngIf="photo" [src]="photo" />
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <h5 *ngIf="place">{{ place.name }}</h5>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <div style="width: 100%" *ngIf="relevant && relevant.length > 0 && place">
+        <p style="font-size: 14px !important; text-align: center !important; margin-top: 8px">{{ relevant.length }} alumni checked into this location!</p>
+        <app-alumni-slides name="users" [slidesPerView]="4" [users]="checkedUsers | matchOrder"> </app-alumni-slides>
+      </div>
+    </ion-row>
+  </ion-grid>
+
+  <div style="text-align: center" *ngIf="alreadyChecked && alreadyChecked.length > 0 && place">
+    <i>Last check in: {{ alreadyChecked[0].created_at }}</i>
+    <p>Would you like to check in again?</p>
+  </div>
+  <ion-button appAM *ngIf="place" class="check-in" (click)="checkin()">Check In</ion-button>
+</div>

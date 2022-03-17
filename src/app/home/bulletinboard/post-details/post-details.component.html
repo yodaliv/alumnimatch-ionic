@@ -1,0 +1,262 @@
+<ion-header no-border>
+  <ion-toolbar appAM>
+    <ion-buttons slot="start">
+      <ion-button mode="md" (click)="goBack()">
+        <ion-icon slot="icon-only" name="md-arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <!--     <ion-title>{{ post?.title || 'Bulletin Board ' }}</ion-title>
+ -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="isLoading">
+  <app-loading *ngIf="isLoading"></app-loading>
+</ion-content>
+
+<ion-content class="center" *ngIf="!isLoading && isError">
+  <ion-note>{{ isError }}</ion-note>
+</ion-content>
+
+<ion-content *ngIf="!isLoading && !isError" [scrollEvents]="true" #content>
+  <ion-list class="ion-no-padding">
+    <ion-item lines="full" class="ion-item">
+      <ion-avatar (click)="loggedIn ? viewProfile(post.user) : null" slot="start">
+        <img src="{{ post?.user?.avatar }}" />
+      </ion-avatar>
+      <ion-label style="padding-left: 10px" (click)="loggedIn ? viewProfile(post.user) : null">
+        <h3>{{ post?.user?.first_name }} {{ post?.user?.last_name }}</h3>
+        <p>{{ post?.created_at | relativeTime }}</p>
+      </ion-label>
+      <button class="like" slot="end" (click)="likePost(post.id)">
+        <ion-icon name="thumbs-up" [class.active]="post?.isLiked"></ion-icon>
+        <ion-note>{{ post?.likes_count }} Likes</ion-note>
+      </button>
+      <button class="report" slot="end" (click)="reportPost(post.id)">
+        <ion-icon name="flag"></ion-icon>
+        <ion-note>Report</ion-note>
+      </button>
+      <button class="delete" slot="end" *ngIf="authPost" (click)="removePost()">
+        <ion-icon name="trash"></ion-icon>
+        <ion-note>Delete</ion-note>
+      </button>
+    </ion-item>
+
+    <ion-item *ngIf="liked_users.length > 0" class="postType-likes" lines="none">
+      <ion-list>
+        <ion-badge color="secondary" appAM>{{ post?.type?.name || '' }}</ion-badge>
+        <ion-badge color="secondary" appAM>{{ post?.category?.name }}</ion-badge>
+      </ion-list>
+
+      <div style="margin-right: 0; margin-left: auto; width: 65%; float: right">
+        <h6 style="text-align: end; margin-top: 0; padding-right: 39%">Liked By:</h6>
+        <app-alumni-slides *ngIf="liked_users.length > 0" [slidesPerView]="4" [align]="'right'" [users]="liked_users | matchOrder"></app-alumni-slides>
+      </div>
+    </ion-item>
+
+    <div style="cursor: pointer" class="px-3" (click)="composePhoto(post.id)">
+      <iframe *ngIf="post.safeUrl" [src]="post.safeUrl" style="width: 100%; height: 240px"></iframe>
+      <div *ngIf="photoTotal == 1 && !post.embed">
+        <img onerror='this.src="assets/imgs/no-image.png"' style="background: #f2f2f2; height: 200px; width: 100%; object-fit: cover; cursor: pointer" src="{{ photos[0] }}" alt="" />
+      </div>
+      <div *ngIf="photoTotal > 1 && !post.embed">
+        <ion-row>
+          <ion-col class="twice-photo text-center mx-0 my-0">
+            <ion-slides #previewSlides appAM pager="true">
+              <ion-slide *ngFor="let photo of photos; let i = index" [ngClass]="i == 1 ? 'postPhotos' : ''">
+                <img onerror='this.src="assets/imgs/no-image.png"' style="background: #f2f2f2; height: 200px; object-fit: cover; cursor: pointer" src="{{ photo }}" alt="" />
+              </ion-slide>
+            </ion-slides>
+          </ion-col>
+        </ion-row>
+      </div>
+      <!-- <ion-spinner name="lines-small"></ion-spinner> -->
+    </div>
+    <ion-item *ngIf="liked_users.length === 0" class="postType" lines="none">
+      <ion-badge color="secondary" appAM>{{ post?.type?.name || '' }}</ion-badge>
+      <ion-badge color="secondary" appAM>{{ post?.category?.name }}</ion-badge>
+    </ion-item>
+
+    <ion-list-header style="min-height: 25px; text-transform: none" class="mt-1">
+      <ion-label class="ion-text-wrap head ion-no-margin ion-no-padding">
+        <h1 style="font-weight: 500; text-transform: capitalize">{{ post.title }}</h1>
+      </ion-label>
+    </ion-list-header>
+
+    <!-- <ion-item *ngIf="post?.summary" lines="none">
+      <ion-label class="ion-text-wrap">
+        <h3 class="title">Summary</h3>
+        <p [innerHTML]="post.summary | linkify"></p>
+      </ion-label>
+    </ion-item> -->
+
+    <ion-item lines="none">
+      <p [innerHTML]="post.description | safeHtml"></p>
+      <ion-label class="ion-text-wrap ion-no-padding">
+        <!-- <h3 class="title">Description</h3> -->
+      </ion-label>
+    </ion-item>
+
+    <ion-list-header style="min-height: 25px">
+      <ion-label>
+        <b>{{ post.comments_count || 0 }} COMMENT{{ post.comments_count !== 1 ? 'S' : '' }}</b></ion-label
+      >
+    </ion-list-header>
+    <ion-list *ngIf="post.comments_count && post.comments_count > 0">
+      <div *ngFor="let comment of comments; let i = index">
+        <!-- <div style="display: flex;"> -->
+        <ion-row class="d-flex">
+          <ion-col class="col-2 text-center">
+            <ion-avatar (click)="viewProfile(comment.comment_user)">
+              <img [src]="comment.comment_user.avatar" />
+              <ion-icon name="ios-radio-button-on" class="on-off-icon" [ngClass]="comment.comment_user?.online ? 'online' : 'offline'"></ion-icon>
+            </ion-avatar>
+            <!-- {{ comment.comment_user.match }}% -->
+          </ion-col>
+          <ion-col class="col-10 pl-0">
+            <h2 style="font-size: 14px" class="my-0" (click)="viewProfile(comment.comment_user)">
+              {{ comment.comment_user.first_name }} {{ comment.comment_user.last_name }}
+              <ion-note style="font-size: 11px; font-weight: 300"
+                ><i>{{ comment.created_at | relativeTime }}</i></ion-note
+              >
+            </h2>
+            <ion-note style="margin-top: 6px; font-size: 16px; color: #444; padding: 1px 6px" [innerHTML]="comment.comment | safeHtml"></ion-note>
+
+            <div class="d-flex align-items-center comment-btns">
+              <a href="javascript:void(0)" class="d-flex align-items-center" (click)="commentReply(i, comment.id)"> <ion-icon name="share-alt" style="transform: rotate(180deg)" class="mr-1"></ion-icon>Reply </a>
+              <a href="javascript:void(0)" class="ml-3" (click)="CommentReplyLike(i, comment.id, '', comment.like == 0 ? 'like' : 'unlike')">
+                <ion-icon name="ios-thumbs-up" [style.color]="comment.like == 1 ? '#ff0000' : ''" class="mr-1"></ion-icon>Like
+              </a>
+            </div>
+            <div>
+              <div *ngIf="selectedIndex > -1 && selectedIndex == i" class="d-flex align-items-center my-2">
+                <div class="input-text">
+                  <ion-textarea appAM rows="1" #replyCmt [(ngModel)]="textValue" class="input-field ion-no-margin reply-text pd-2" placeholder="Add a reply..." autoGrow> </ion-textarea>
+                  <span class="span-text text-center" (click)="CommentReplyLike(i, comment.id, replyCmt.value, 'comment')">
+                    <a href="javascript:void(0)" [ngClass]="!replyCmt.value ? 'send-btn' : ''">
+                      <ion-icon name="send" class="mr-1" style="font-size: 24px" [style.color]="!replyCmt.value ? '#bfbfbff7' : ''"></ion-icon>
+                    </a>
+                  </span>
+                </div>
+                <div class="d-flex align-items-center reply-btns pull-right ml-2">
+                  <a href="javascript:void(0)" (click)="selectedIndex = -1; textValue = ''; cmtReply = []">
+                    <ion-icon name="close" class="mr-1"></ion-icon>
+                  </a>
+                </div>
+              </div>
+              <div class="replyList" *ngIf="comment.childComment && comment.childComment > 0">
+                <ion-row class="d-flex" *ngFor="let reply of comment.childComments; let j = index">
+                  <ion-col class="col-3 text-center">
+                    <ion-avatar (click)="viewProfile(reply.comment_user)">
+                      <img [src]="reply.comment_user.avatar" />
+                      <ion-icon name="ios-radio-button-on" class="on-off-icon" [ngClass]="reply.comment_user?.online ? 'online' : 'offline'"></ion-icon>
+                    </ion-avatar>
+                    <!-- {{ reply.comment_user.match }}% -->
+                  </ion-col>
+                  <ion-col class="col-9 ml-0 pl-0">
+                    <h2 style="font-size: 14px" class="my-0" (click)="viewProfile(reply.comment_user)">
+                      {{ reply.comment_user.first_name }} {{ reply.comment_user.last_name }}
+                      <!-- <ion-note style="font-size: 11px">{{ reply.created_at | relativeTime }}</ion-note> -->
+                    </h2>
+                    <ion-note style="margin-top: 6px; font-size: 16px; color: #444; border: 2px solid #ddd; border-radius: 6px; padding: 1px 6px" [innerHTML]="reply.comment | safeHtml"> </ion-note>
+                  </ion-col>
+                </ion-row>
+                <app-alumni-loading *ngIf="load.reply === 1"></app-alumni-loading>
+                <!-- <div class="ion-text-center" *ngIf="load.reply === 0" (click)="selectedIndex=-1;commentReply(i,comment.id)">
+                  <ion-button size="small" appAM class="load-more">Load More</ion-button>
+                </div> -->
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+        <!-- </div> -->
+      </div>
+      <app-alumni-loading *ngIf="load.comments === 1"></app-alumni-loading>
+      <div class="ion-text-center" *ngIf="load.comments === 0" (click)="_getComments(post.id)">
+        <ion-button size="small" appAM class="load-more">Load More</ion-button>
+      </div>
+    </ion-list>
+    <ion-item lines="none" *ngIf="!post.comments_count || post.comments_count === 0">
+      <ion-note style="margin-top: 6px"> Be First Comment </ion-note>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<!-- <ion-list class="floating-list" *ngIf='tagging && usersProrate.length > 0'>
+  <ion-item style="cursor: pointer;" *ngFor="let user of usersProrate" (click)="tag(user)">
+    <app-alumni-sm [type]="'tag'" [user]="user"></app-alumni-sm><p>{{user.first_name}} {{user.last_name}}, {{user.college.name}} </p>
+  </ion-item>
+</ion-list>
+<ion-list class="floating-list" *ngIf='hashtagging && categoriesProrate.length > 0'>
+  <ion-item style="cursor: pointer;" *ngFor="let cat of categoriesProrate" (click)="tag(cat)">
+    <p>{{cat.name}} <br> {{cat.shortDescription}} </p>
+  </ion-item>
+</ion-list>
+<ion-list class="floating-list" *ngIf='step == 2'>
+  <ion-item style="cursor: pointer;" *ngFor="let cat of categoriesProrate" (click)="tag(cat)">
+    <p>{{cat.name}} <br> {{cat.shortDescription}} </p>
+  </ion-item>
+</ion-list> -->
+
+<app-select-tag-user class="floating-list" *ngIf="tagging" [usersProrate]="usersProrate" (tag)="tag($event)"> </app-select-tag-user>
+
+<app-select-post-category class="floating-list" *ngIf="step == 1 && hashtagging" [categoriesProrate]="categoriesProrate" (tag)="tag($event)"></app-select-post-category>
+
+<app-select-post-category class="floating-list" *ngIf="step == 2 && hashtagging" [categoriesProrate]="categoriesProrate" (tag)="tag($event)"></app-select-post-category>
+<!-- 
+<ion-list class="floating-list" *ngIf='tagging'>
+  <ion-item style="cursor: pointer;" *ngFor="let user of usersProrate" (click)="tag(user)">
+    <app-alumni-sm [type]="'tag'" [user]="user"></app-alumni-sm><p>{{user.first_name}} {{user.last_name}} - {{user.college.name}} </p>
+  </ion-item>
+  <ion-item *ngIf="tagging && usersProrate.length === 0">
+    <ion-label class="ion-text-wrap">
+      <ion-text>
+        <h3 style="font-weight: 500;">No results found</h3>
+      </ion-text>
+    </ion-label>
+  </ion-item>
+</ion-list>
+<ion-list class="floating-list" *ngIf='step == 1 && hashtagging'>
+  <ion-item style="cursor: pointer;" *ngFor="let cat of categoriesProrate" (click)="tag(cat)">
+    <ion-label class="ion-text-wrap">
+      <ion-text>
+        <h3 style="font-weight: 500;">{{cat.name}}</h3>
+      </ion-text>
+      <p>{{cat.shortDescription}}</p>
+    </ion-label>
+  </ion-item>
+  <ion-item *ngIf="hashtagging && categoriesProrate.length === 0">
+    <ion-label class="ion-text-wrap">
+      <ion-text>
+        <h3 style="font-weight: 500;">No results found</h3>
+      </ion-text>
+    </ion-label>
+  </ion-item>
+</ion-list>
+<ion-list class="floating-list" *ngIf='step == 2 && hashtagging'>
+  <ion-item style="cursor: pointer;" *ngFor="let cat of categoriesProrate" (click)="tag(cat)">
+    <ion-label class="ion-text-wrap">
+      <ion-text>
+        <h3 style="font-weight: 500;">{{cat.name}}</h3>
+      </ion-text>
+      <p>{{cat.shortDescription}}</p>
+    </ion-label>
+  </ion-item>
+  <ion-item *ngIf="step == 2 && hashtagging && categoriesProrate.length === 0">
+    <ion-label class="ion-text-wrap">
+      <ion-text>
+        <h3 style="font-weight: 500;">No results found</h3>
+      </ion-text>
+    </ion-label>
+  </ion-item>
+</ion-list> -->
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar appAM>
+    <ion-textarea appAM autocapitalize="sentences" [autofocus]="isFocus" (ionInput)="_handleMessageInput($event)" name="comment" [value]="comment.comment || ''" autoGrow rows="1" class="ion-no-margin" placeholder="leave your thoughts here...">
+    </ion-textarea>
+    <ion-buttons slot="end">
+      <ion-button style="color: white" [disabled]="isDisabled" (click)="likePost(post.id, 'comment')" mode="md">post </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,11 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "YQZTCX4R59.com.alumni.app",
+                "paths": ["*"]
+            }
+        ]
+    }
+}

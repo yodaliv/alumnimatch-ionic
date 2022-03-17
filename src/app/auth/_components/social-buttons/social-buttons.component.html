@@ -1,0 +1,36 @@
+<div class="ion-padding">
+  <ion-grid>
+    <ion-row class="ion-text-center">
+      <ion-col size="12" sizeMd="7" style="margin: auto;">
+        <ion-button class="btn-google" (click)="clickSc('google')" expand="block" style="text-transform: none;">
+          <ion-icon slot="start" name="logo-google" style="font-size: 24px;"></ion-icon>
+          <ion-label style="width: 100%; text-align: left; padding-left: 1.5rem;">{{type == 'login' ? 'Login' : 'Join'}} with Google</ion-label>
+        </ion-button>
+      </ion-col>
+      <ion-col size="12" *ngIf="isIosMobile" sizeMd="7" style="margin: auto;">
+        <ion-button class="btn-apple" (click)="clickSc('apple')" expand="block" style="text-transform: none;">
+          <ion-icon slot="start" name="logo-apple" style="font-size: 24px;"></ion-icon>
+          <ion-label style="width: 100%; text-align: left; padding-left: 1.5rem;">{{type == 'login' ? 'Login' : 'Join'}} with Apple</ion-label>
+        </ion-button>
+      </ion-col>
+      <ion-col size="12" sizeMd="7" style="margin: auto;">
+        <ion-button class="btn-facebook" (click)="clickSc('facebook')" expand="block" style="text-transform: none;">
+          <ion-icon slot="start" name="logo-facebook" style="font-size: 24px;"></ion-icon>
+          <ion-label style="width: 100%; text-align: left; padding-left: 1.5rem;">{{type == 'login' ? 'Login' : 'Join'}} with Facebook</ion-label>
+        </ion-button>
+      </ion-col>
+      <ion-col size="12"  sizeMd="7" style="margin: auto;">
+        <ion-button class="btn-twitter" (click)="clickSc('twitter')" expand="block" style="text-transform: none;">
+          <ion-icon slot="start" name="logo-twitter" style="font-size: 24px;"></ion-icon>
+          <ion-label style="width: 100%; text-align: left; padding-left: 1.5rem;">{{type == 'login' ? 'Login' : 'Join'}} with Twitter</ion-label>
+        </ion-button>
+      </ion-col>
+      <ion-col size="12"  sizeMd="7" style="margin: auto;">
+        <ion-button class="btn-linkedin" (click)="clickSc('linkedin')" expand="block" style="text-transform: none;">
+          <ion-icon slot="start" name="logo-linkedin" style="font-size: 24px;"></ion-icon>
+          <ion-label style="width: 100%; text-align: left; padding-left: 1.5rem;">{{type == 'login' ? 'Login' : 'Join'}} with Linkedin</ion-label>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>

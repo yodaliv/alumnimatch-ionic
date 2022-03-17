@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar appAM>
+    <ion-buttons slot="start">
+      <ion-button mode="md" (click)="dismiss()">
+        <ion-icon name="md-arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Your Alumni Networks</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding-start ion-padding-end">
+  <p class="am-title" position="stacked">Select another Alumni Network,<br> or change your Primary College:</p>
+  <div *ngFor="let item of data; let i = index;" class="mb-2">
+    <ion-item>
+      <ion-label>{{ item.name }}</ion-label>
+      <ion-item *ngIf="mutlipleColleges" lines="none" class="am-action-item">
+        <ion-button (click)="removeSchool(i)" class="am-btn-add" size="small" expand="fill" color="danger" fill="outline">
+          Remove
+        </ion-button>
+      </ion-item>
+    </ion-item>
+  </div>
+  
+  <div *ngIf="flag">
+    <form [formGroup]="collegeForm">
+      <ion-label class="am-label" position="stacked">Select the country:</ion-label>
+      <ion-item class="am-control-item" lines="none">
+        <ion-select formControlName="country" okText="CHOOSE" cancelText="CANCEL" placeholder="Select Country" [interfaceOptions]="selectCountryOption">
+          <ion-select-option *ngFor="let country of countries" [value]="country.id">{{country.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-label class="am-label" position="stacked">Select the state:</ion-label>
+      <ion-item class="am-control-item" lines="none">
+        <ion-select formControlName="state" [disabled]="!collegeForm.controls.country.valid" okText="CHOOSE" cancelText="CANCEL" placeholder="Select State" [interfaceOptions]="selectStateOption" >
+          <ion-select-option *ngFor="let state of states" [value]="state.id">{{state.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-label class="am-label" position="stacked">Select your school:</ion-label>
+      <ion-item class="am-control-item" lines="none">
+        <ion-input type="text" [value]="collegeForm.controls.college.value?.name || ''" [disabled]="!collegeForm.controls.state.valid" placeholder="School" readonly (click)="chooseCollege()" [disabled]="collegeForm.controls.college.disabled"></ion-input>
+      </ion-item>
+
+      <ion-button shape="round" expand="block" color="danger" class="am-btn ion-margin-top" (click)="addCollege()">Add School</ion-button>
+
+      <ion-button fill="clear" expand="block" color="primary" class="ion-margin-top" (click)="showNoCollegeAlert()" style="white-space: normal;">I can't find my schools in these schools.</ion-button>
+    </form>
+  </div>
+  <ion-item lines="none" class="am-action-item">
+    <ion-button *ngIf="!flag" (click)="toggleCollege()" appAM class="am-btn-add" size="small" expand="fill">
+      <ion-icon name="add-circle"></ion-icon> &nbsp;&nbsp;Add Another Network
+    </ion-button>
+  </ion-item>
+</ion-content>
+  
+<ion-footer appAM class="btn-footer">
+  <ion-toolbar>
+    <ion-button (click)="onSubmit()" expand="block" class="ion-no-margin" appAM>Submit</ion-button>
+  </ion-toolbar>
+</ion-footer>

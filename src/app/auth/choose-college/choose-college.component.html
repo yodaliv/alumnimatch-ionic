@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button mode="md" icon="md-arrow-back"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-padding-start ion-padding-end">Choose Alumni Network(s)</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+    <p class="description">
+      Select your main affiliated alumni networks from our list of more than 35,000 schools below. 
+      By choosing a school from our database, you are certifying that you are an official alumni of the selected school and you did graduate from the selected school(s)..
+     
+    </p>
+    <ion-item *ngIf="!addHighschool && !hsIsSet" (click)="addHighschool = !addHighschool">
+      <ion-label>Add your Highschool</ion-label>
+      <ion-icon name="chevron-down" appAM></ion-icon>
+    </ion-item>
+    <ion-item *ngIf="addHighschool" (click)="addHighschool = !addHighschool">
+      <ion-label>Add your Highschool</ion-label>
+      <ion-icon name="chevron-forward-circle" appAM></ion-icon>
+    </ion-item>
+    <ion-item *ngIf="!addHighschool && hsIsSet" (click)="resetHighschoolData()">
+      <ion-label>Add your Highschool</ion-label>
+      <ion-icon name="checkmark-circle-outline" color="success" appAM></ion-icon>
+    </ion-item>
+    <form [formGroup]="highschoolForm" *ngIf="addHighschool">
+      <ion-label class="am-label" position="stacked">Select your Country:</ion-label>
+      <ion-item class="am-control-item" lines="none">
+        <ion-select formControlName="country" okText="CHOOSE" cancelText="CANCEL" placeholder="Select Country" [interfaceOptions]="selectCountryOption">
+          <ion-select-option *ngFor="let country of countries" [value]="country.id">{{country.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-label class="am-label" position="stacked">Select your State:</ion-label>
+      <ion-item class="am-control-item" lines="none">
+        <ion-select formControlName="state" [disabled]="!highschoolForm.controls.country.valid" okText="CHOOSE" cancelText="CANCEL" placeholder="Select State" [interfaceOptions]="selectStateOption" >
+          <ion-select-option *ngFor="let state of states" [value]="state.id">{{state.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-label class="am-label" position="stacked">Select your Highschool:</ion-label>
+      <ion-item class="am-control-item" lines="none">
+        <ion-input type="text" [value]="highschoolForm.controls.college.value?.name || ''" [disabled]="!highschoolForm.controls.state.valid" placeholder="Highschool" readonly (click)="chooseHighschool()" [disabled]="highschoolForm.controls.college.disabled"></ion-input>
+      </ion-item>
+    </form>
+    <ion-item *ngIf="!addCollege" (click)="addCollege = !addCollege">
+      <ion-label>Add your College</ion-label>
+      <ion-icon name="chevron-down" appAM></ion-icon>
+    </ion-item>
+    <ion-item *ngIf="addCollege" (click)="addCollege = !addCollege">
+      <ion-label>Add your College</ion-label>
+      <ion-icon name="chevron-forward-circle" appAM></ion-icon>
+    </ion-item>
+    <form [formGroup]="collegeForm" *ngIf="addCollege">
+      <ion-label class="am-label" position="stacked">Select your Country:</ion-label>
+      <ion-item class="am-control-item" lines="none">
+        <ion-select formControlName="country" okText="CHOOSE" cancelText="CANCEL" placeholder="Select Country" [interfaceOptions]="selectCountryOption">
+          <ion-select-option *ngFor="let country of countries" [value]="country.id">{{country.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-label class="am-label" position="stacked">Select your State:</ion-label>
+      <ion-item class="am-control-item" lines="none">
+        <ion-select formControlName="state" [disabled]="!collegeForm.controls.country.valid" okText="CHOOSE" cancelText="CANCEL" placeholder="Select State" [interfaceOptions]="selectStateOption" >
+          <ion-select-option *ngFor="let state of states" [value]="state.id">{{state.name}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-label class="am-label" position="stacked">Select your College:</ion-label>
+      <ion-item class="am-control-item" lines="none">
+        <ion-input type="text" [value]="collegeForm.controls.college.value?.name || ''" [disabled]="!collegeForm.controls.state.valid" placeholder="College" readonly (click)="chooseCollege()" [disabled]="collegeForm.controls.college.disabled"></ion-input>
+      </ion-item>
+      <ion-item class="am-control-item" id="student" lines="none">
+        <ion-label class="am-label" slot="start">Are you currently a student?</ion-label>
+        <ion-toggle appAM checked="false" mode="ios" slot="end" (click)="toggleStudent()"></ion-toggle>
+      </ion-item>
+      <ion-button shape="round" expand="block" color="danger" class="am-btn ion-margin-top" (click)="onSubmit()">YES! I Am An Alumni Here</ion-button>
+<br><br><hr><br><br>
+      <ion-button fill="clear" expand="block" color="primary" class="ion-margin-top" (click)="showNoCollegeAlert()" style="white-space: normal;">I can't find my school in this list.</ion-button>
+    </form>
+</ion-content>

@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <access origin="*" />
+  
+  <feature name="AppVersion">
+    <param name="ios-package" value="AppVersion"/>
+  </feature>
+
+  <feature name="Camera">
+    <param name="ios-package" value="CDVCamera"/>
+  </feature>
+
+  <feature name="Device">
+    <param name="ios-package" value="CDVDevice"/>
+  </feature>
+
+  <feature name="FacebookConnectPlugin">
+    <param name="ios-package" value="FacebookConnectPlugin"/>
+    <param name="onload" value="true"/>
+  </feature>
+
+  <feature name="Geolocation">
+    <param name="ios-package" value="CDVLocation"/>
+  </feature>
+
+  <feature name="GooglePlus">
+    <param name="ios-package" value="GooglePlus"/>
+    <param name="onload" value="true"/>
+  </feature>
+
+  <feature name="InAppBrowser">
+    <param name="ios-package" value="CDVWKInAppBrowser"/>
+    <param name="onload" value="true"/>
+  </feature>
+
+  <feature name="SignInWithApple">
+    <param name="ios-package" value="SignInWithApple"/>
+    <param name="onload" value="true"/>
+  </feature>
+
+  <feature name="Zoom">
+    <param name="ios-package" value="Zoom"/>
+  </feature>
+
+  <feature name="IonicDeeplinkPlugin">
+    <param name="ios-package" value="IonicDeeplinkPlugin" onload="true"/>
+  </feature>
+
+  <feature name="TwitterConnect">
+    <param name="ios-package" value="TwitterConnect"/>
+  </feature>
+
+  <feature name="Device">
+    <param name="ios-package" value="CDVDevice"/>
+  </feature>
+
+  <feature name="ImagePicker">
+    <param name="ios-package" value="SOSPicker"/>
+  </feature>
+
+  
+  <preference name="ScrollEnabled" value="false" />
+  <preference name="android-minSdkVersion" value="22" />
+  <preference name="android-targetSdkVersion" value="29" />
+  <preference name="BackupWebStorage" value="none" />
+  <preference name="SplashMaintainAspectRatio" value="true" />
+  <preference name="FadeSplashScreenDuration" value="300" />
+  <preference name="SplashShowOnlyFirstTime" value="false" />
+  <preference name="SplashScreen" value="screen" />
+  <preference name="SplashScreenDelay" value="3000" />
+  <preference name="orientation" value="portrait" />
+  <preference name="TwitterConsumerKey" value="zommV2daVOCSINT8GnqAqgifQ" />
+  <preference name="TwitterConsumerSecret" value="pud2L6Icqkz4lpekoXbfCkuZnK55Y0Qo0eCd3xYqXGV1LACoy4" />
+  <preference name="CordovaWebViewEngine" value="CDVWKWebViewEngine" />
+</widget>

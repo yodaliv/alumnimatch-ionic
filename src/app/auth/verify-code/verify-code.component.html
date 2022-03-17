@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons>
+      <ion-back-button mode="md" icon="md-arrow-back"></ion-back-button>
+      <ion-title>Invite Code Time</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="ion-text-center ion-padding">
+    <img src="assets/imgs/login/invite-code-icon.png" class="thumb-img">
+    <h1 class="title-thanks">Invite Only Membership</h1>
+    <p class="description">
+    You must have an invite code to become a member of AlumniMatch.  
+    </p>
+    <ion-item lines="none">
+      <ion-input type="number" full round placeholder="Put Your Invite Code Here" [(ngModel)]="inviteCode">
+      </ion-input>
+    </ion-item>
+    <ion-button class="nextBtn" expand="full" (click)="verifyInviteCode()">Submit</ion-button>
+    <p class="description">
+<br><br>Thank you for joining our amazing community of alumni! Please tell at least one other person. Thanks again!
+</div>
+</ion-content>

@@ -1,0 +1,168 @@
+<div *ngIf="!post.newJoin">
+  <ion-card class="ion-no-margin">
+    <ion-item *ngIf="postType !== 'own'" lines="full" class="ion-item">
+      <ion-avatar slot="start">
+        <ion-badge *ngIf="user && user.college && post.college && post.college.id !== user.college.id" appAM
+          [theme]="post.college" class="different-alumni">
+          {{post.college.acronym || 'O'}}
+        </ion-badge>
+        <ion-img src="{{post.user.avatar}}">
+        </ion-img>
+
+      </ion-avatar>
+
+      <ion-label>
+        <h3>{{post.user.first_name}} {{post.user.last_name}}</h3>
+        <p>{{post.created_at | relativeTime}}</p>
+      </ion-label>
+    </ion-item>
+
+  <iframe *ngIf="post.safeUrl" [src]="post.safeUrl" style="width: 100%;height:240px;"></iframe>
+  <div style="cursor: pointer;">
+    <div *ngIf="(photoTotal==1) && !post.embed" (click)="composePhoto($event, post.id)">
+      <img onerror='this.src="assets/imgs/no-image.png"'
+        style="background: #f2f2f2; height: 200px;object-fit: cover; cursor: pointer;" src="{{photos[0]}}" alt="" />
+    </div>
+    <div *ngIf="(photoTotal>1) && !post.embed">
+      <ion-row (click)="composePhoto($event, post.id)">
+        <ion-col class="text-center twice-photo my-0 mx-0">
+          <ion-slides #previewSlides appAM pager="true">
+            <ion-slide *ngFor="let photo of photos;let i=index;" [ngClass]="(i==1)?'postPhotos':''">
+              <img onerror='this.src="assets/imgs/no-image.png"'
+              style="background: #f2f2f2; height: 200px;object-fit: cover; cursor: pointer;" src="{{photo}}" alt="" />
+            </ion-slide>
+          </ion-slides>
+          
+        </ion-col>
+      </ion-row>
+    </div>
+    <ion-card-header class="ion-no-padding ion-no-margin"  (click)="composePost(post.id)">
+      <ion-card-title>{{post.title}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content button>
+        <div *ngIf="!post.truncate">
+          <p [innerHTML]="post.description | safeHtml"></p>
+        </div>
+        <div *ngIf="post.truncate">
+          <p [innerHTML]="post.descriptionTruncate | safeHtml"></p>
+        </div>
+        <div class="postType">
+          <ion-badge *ngIf="post.type?.name != 'General'" color="secondary" appAM>{{post.type.name}}</ion-badge>
+          <ion-badge *ngIf="post.category?.name != 'General'" color="secondary" appAM>{{post.category.name}}</ion-badge>
+        </div>
+      </ion-card-content>
+  </div>
+  <ion-footer *ngIf="!hideFooter">
+    <ion-row>
+      <ion-col>
+        <button (click)="likePostEvent(post.id)">
+          <ion-icon name="thumbs-up" [class.active]="post.isLiked"></ion-icon>
+          <ion-note>{{post.likes_count}} Likes</ion-note>
+        </button>
+      </ion-col>
+      <ion-col>
+        <button style="cursor: default;" (click)="composePost(post.id)">
+          <ion-icon name="text"></ion-icon>
+          <ion-note>{{post.comments_count}} Comments</ion-note>
+        </button>
+      </ion-col>
+      <ion-col>
+        <button (click)="copyMessage('https://alumnimatch.web.app/#/home/bulletinboard/details/' + post.id)">
+          <ion-icon src="assets/icon/share-social.svg"></ion-icon>
+          <ion-note>Share this Post!</ion-note>
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-footer>
+</ion-card>
+</div>
+<div *ngIf="post.newJoin" class="newjoin">
+  <ion-card class="ion-no-margin">
+    <ion-item *ngIf="postType !== 'own'" lines="full">
+      <ion-avatar slot="start">
+        <ion-badge *ngIf="user && user.college && post.college && post.college.id !== user.college.id" appAM
+          [theme]="post.college" class="different-alumni">
+          {{post.college.acronym || 'O'}}
+        </ion-badge>
+        <ion-img src="{{post.user.avatar}}">
+        </ion-img>
+      </ion-avatar>
+
+      <ion-label *ngIf="loggedIn">
+        <h3 style="word-wrap:break-word; white-space:normal;">{{post.user.first_name}} {{post.user.last_name}}
+          {{post.match ? '(' + post.match + '%)' : ''}}</h3>
+      </ion-label>
+      <ion-label *ngIf="!loggedIn">
+        <h3 style="word-wrap:break-word; white-space:normal;">{{post.user.first_name}} {{post.user.last_name}}</h3>
+      </ion-label>
+      <ion-note><i>Joined {{post.created_at | relativeTime}}</i></ion-note>
+    </ion-item>
+
+    <iframe *ngIf="post.safeUrl" [src]="post.safeUrl" style="width: 100%;height:240px;"></iframe>
+    <div style="cursor: pointer;" (click)="composePost(post.id)">
+      <img *ngIf="post.photoUrl && !post.embed" onerror='this.src="assets/imgs/no-image.png"'
+        style="background: #f2f2f2; height: 200px;object-fit: cover; cursor: pointer;" src="{{post.photoUrl}}" alt="" />
+      <ion-card-header class="ion-no-padding ion-no-margin">
+        <ion-card-title>{{post.title}}</ion-card-title>
+      </ion-card-header>
+      <ion-card-content button>
+        <p [innerHTML]="post.description | safeHtml"></p>
+      </ion-card-content>
+
+    </div>
+
+    <ion-footer *ngIf="!hideFooter && loggedIn">
+      <ion-row>
+        <ion-col>
+          <button appAM (click)="artificialCommentEvent(post.id,'Welcome!')">
+            <div>
+              <img style="max-width: 25px; float: left; filter: invert(100%); -webkit-filter: invert(100%);" width="25"
+                height="25" src="assets/icon/wave.png">
+              <div style="padding: 5px 0px 0 10px;">
+                Welcome!
+              </div>
+            </div>
+
+          </button>
+        </ion-col>
+        <ion-col>
+          <button appAM (click)="artificialCommentEvent(post.id,'I know you!')">
+            <div>
+              <ion-icon style="color: #f2f2f2;" name="school"></ion-icon>
+              <span style="transform: translateY(5px);">I know you!</span>
+            </div>
+
+          </button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="post.college.id == 1489">
+        <ion-col>
+          <button id="boomer" (click)="artificialCommentEvent(post.id,'BOOMER!')">
+            <div>
+              <ion-icon style="color: #f2f2f2;" name="megaphone" mode="md"></ion-icon>
+              <!-- <img style="max-width: 30px; float: left; filter: invert(100%); -webkit-filter: invert(100%);" width="30px" height="30px"  src="assets/icon/high-five.png"> -->
+              <!-- div style="padding: 7px 30px 0 40px;"> -->
+              <span style="transform: translateY(5px);">BOOMER!</span>
+              <!-- </div> -->
+            </div>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-footer>
+    <ion-footer *ngIf="!hideFooter && !loggedIn">
+      <ion-row>
+        <ion-col>
+          <button appAM (click)="navCtrl.navigateForward('/auth');">
+            <div>
+              <img style="max-width: 25px; float: left;" width="25"
+                height="25" src="assets/icon/hands.png">
+              <div style="padding: 5px 0px 0 10px;">
+                Join AlumniMatch
+              </div>
+            </div>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-footer>
+  </ion-card>
+</div>

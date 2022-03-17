@@ -1,0 +1,11 @@
+ion-content {
+  > * {
+    max-width: 900px;
+    margin: auto !important;
+  }
+}
+
+.btn-clear {
+  height: 24px;
+  font-size: 14px;
+}

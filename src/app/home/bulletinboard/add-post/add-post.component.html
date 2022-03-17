@@ -1,0 +1,87 @@
+<ion-header no-border>
+  <ion-toolbar appAM>
+    <ion-buttons slot="start">
+      <ion-button mode="md" (click)="dismiss()">
+        <ion-icon slot="icon-only" name="md-close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ title }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="isLoading">
+  <app-loading *ngIf="isLoading"></app-loading>
+</ion-content>
+
+<ion-content class="center" *ngIf="!isLoading && isError">
+  <ion-note>Error: {{ errorMessage }}</ion-note>
+</ion-content>
+
+<ion-content class="ion-padding ion-relative" *ngIf="!isLoading && !isError">
+  <ion-list lines="full" class="ion-no-margin ion-no-padding">
+    <ion-item class="am-control-item" lines="none">
+      <div>
+        <ion-input id="title" name="title" [value]="post.title || ''" (ionInput)="_handleInputChange($event)" type="text" placeholder="Title" maxlength="150"></ion-input>
+        <ion-note class="required hidden" name="required">Required</ion-note>
+        <ion-note class="right">{{ post.title?.length || 0 }}/150</ion-note>
+      </div>
+    </ion-item>
+    <ion-item class="am-control-item ion-margin-top" lines="none">
+      <div>
+        <ion-textarea id="description" name="description" [value]="post.description || ''" (ionInput)="_handleInputChange($event)" placeholder="Description (add a YouTube video link here instead of adding a photo)" rows="5" maxlength="1500">
+        </ion-textarea>
+        <ion-note class="required hidden" name="required">Required</ion-note>
+        <ion-note *ngIf="post.description?.length > 1400" class="right">{{ post.description?.length || 0 }}/1500</ion-note>
+      </div>
+    </ion-item>
+    <!-- <ion-item class="am-control-item ion-margin-top" lines="none">
+      <div>
+        <ion-textarea id="summary" name ="summary"[value]="post.summary || ''" (ionInput)="_handleInputChange($event)" placeholder="Add summary" rows="3" maxlength="144"></ion-textarea>
+        <ion-note class= "required hidden" name ="required">Required</ion-note>
+        <ion-note class="right">{{ post.summary?.length || 0 }}/300</ion-note>
+      </div>
+    </ion-item> -->
+    <ion-item class="am-control-item" lines="none">
+      <div class="outer_div align-items-center">
+        <div style="text-align: center">Add photos from device</div>
+        <ion-row class="row">
+          <ion-col class="col-4" *ngFor="let photo of photosSet; let i = index">
+            <ion-icon name="close-circle" class="cancel" (click)="deletePhoto(i)"></ion-icon>
+            <ion-img id="photoTest" class="ion-margin-to images outer-border" [src]="photo || '/assets/imgs/no-image.png'"> </ion-img>
+          </ion-col>
+          <ion-col [ngClass]="photosSet.length > 0 ? 'col-4' : 'col-12'">
+            <ion-img id="photoTest" (click)="takePhoto()" (ionError)="failure(this)" class="ion-margin-to images" (ionImgDidLoad)="success()" [src]="'/assets/imgs/add-photo.jpg'"> </ion-img>
+          </ion-col>
+        </ion-row>
+        <p style="text-align: center">[or enter URL]</p>
+        <ion-input id="photoUrl" name="photoUrl" [value]="post.photoUrl || ''" (ionInput)="_handleInputChange($event)" type="text" placeholder="Add URL Link"></ion-input>
+        <ion-note class="required hidden" name="required">Required</ion-note>
+        <ion-note>include image (png, jpeg, gif) with http:// or https://</ion-note>
+      </div>
+    </ion-item>
+    <ion-item lines="none">
+      <ion-checkbox id="publish_network" mode="md" slot="start" class="checkbox-square" [(ngModel)]="post.publish_networks"></ion-checkbox>
+      <ion-label style="font-size: small">Post Only To My Networks</ion-label>
+    </ion-item>
+    <ion-item lines="none" *ngIf="post.publish_networks">
+      <ion-label>Choose Networks</ion-label>
+      <ion-select multiple="true" placeholder="Choose Networks" [(ngModel)]="post.colleges">
+        <ion-select-option *ngFor="let college of myColleges" [value]="college.id">{{college.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-note style="font-size: 11px" class="required hidden" name="required">Required</ion-note>
+  </ion-list>
+  <app-loading *ngIf="isSubmitting" class="loadingFull" isFull="{true}"></app-loading>
+</ion-content>
+
+<ion-footer *ngIf="!isLoading && !isError" appAM class="ion-no-border">
+  <ion-toolbar>
+    <ion-button disabled="{{ isSubmitting }}" appAM expand="block" (click)="_handlePublish()" class="ion-no-margin">{{ isLast ? 'Publish' : 'Next' }}</ion-button>
+  </ion-toolbar>
+</ion-footer>
+
+<app-select-tag-user class="floating-list" *ngIf="tagging" [usersProrate]="usersProrate" (tag)="tag($event)"> </app-select-tag-user>
+
+<app-select-post-category class="floating-list" *ngIf="step == 1 && hashtagging" [categoriesProrate]="categoriesProrate" (tag)="tag($event)"></app-select-post-category>
+
+<app-select-post-category class="floating-list" *ngIf="step == 2 && hashtagging" [categoriesProrate]="categoriesProrate" (tag)="tag($event)"></app-select-post-category>

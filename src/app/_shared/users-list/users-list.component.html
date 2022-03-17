@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar appAM>
+    <ion-buttons slot="start">
+      <ion-button mode="md" (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Blocked Users</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <app-alumni *ngFor="let user of users | matchOrder" [user]="user" (profileClick)="unblock(user)"></app-alumni>
+    <app-alumni-loading *ngIf="load === 1"></app-alumni-loading>
+    <div class="ion-text-center" *ngIf="load === 0" (click)="getBlocks()">
+      <ion-button size="small" appAM class="load-more">Load More</ion-button>
+    </div>
+  </ion-list>
+  <i *ngIf="users.length === 0">Looks like you haven't blocked any users</i>
+</ion-content>

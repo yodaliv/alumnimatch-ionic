@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar appAM>
+    <ion-buttons slot="start">
+      <ion-button mode="md" (click)="dismiss()">
+        <ion-icon slot="icon-only" name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title *ngIf="unreadCount > 0">{{ unreadCount === 1 ? unreadCount + ' Unread Notification' : unreadCount + ' Unread Notifications' }}</ion-title>
+    <ion-title *ngIf="unreadCount === 0">No Notifications</ion-title>
+    <ion-buttons slot="end" *ngIf="notifications.length > 0">
+      <ion-button mode="md" (click)="clearAllNotifications()">
+        <ion-icon class="trash" name="trash"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="empty-notifs">
+    <i *ngIf="notifications.length === 0">Looks like you're all caught up!</i>
+  </div>
+  <ion-list>
+    <ion-item-sliding *ngFor="let notification of notifications">
+      <ion-item button class="notification" (click)="viewNotification(notification)">
+        <div *ngIf="notification.sender && user.user.college.id === notification.sender.college.id" slot="start" class="match" appAM>
+          <img [src]="notification.sender?.avatar || 'assets/imgs/user.png'" class="avatar" onerror="this.onerror=null;this.src='assets/imgs/user.png';" alt="" />
+          <img src="assets/icon/check_friend.png" class="friend" *ngIf="notification.sender.is_friend && notification.sender.is_friend == 1" />
+          <div class="percent">
+            <div>
+              <b> {{ notification.sender?.match }}% </b>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="notification.sender && user.user.college.id !== notification.sender.college.id" slot="start" class="match" appAM [theme]="notification.sender.college">
+          <ion-badge appAM [theme]="notification.sender.college" class="different-alumni">
+            {{ notification.sender.college.acronym || 'O' }}
+          </ion-badge>
+          <img [src]="notification.sender?.avatar || 'assets/imgs/user.png'" class="avatar" onerror="this.onerror=null;this.src='assets/imgs/user.png';" alt="" />
+          <img src="assets/icon/check_friend.png" class="friend" *ngIf="notification.sender.is_friend && notification.sender.is_friend == 1" />
+          <div class="percent">
+            <div>
+              <b> {{ notification.sender?.match }}% </b>
+            </div>
+          </div>
+        </div>
+        <div class="item-start">
+          <div *ngIf="!notification.viewed" class="unread-bubble" appAM></div>
+          <h5>{{ notification.title }}</h5>
+          <p>{{ notification.message }}</p>
+        </div>
+        <div class="item-end">
+          <ion-note>{{ notification.created_at | relativeTime }}</ion-note>
+        </div>
+      </ion-item>
+      <ion-item-options color="danger" slot="end">
+        <ion-buttons>
+          <ion-button mode="md" (click)="clearOneNotification(notification)">
+            <ion-icon slot="icon-only" name="close"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,31 @@
+<ion-content class="ion-text-center">
+  <img class="logo" src="assets/imgs/login/animated_logo.gif">
+
+  <p class="title ion-padding-start ion-padding-end" ><br>
+    AlumniMatch is a free & easy to use networking tool to connect with High School and College alumni.
+  </p><br>
+
+  <ion-item color="medium" class="ion-padding rounded light-padding" lines="none">
+    <ion-checkbox slot="start" mode="md" [(ngModel)]="termsAgreed" style="margin-right: 12px;"></ion-checkbox>
+    <div class="ion-no-margin" style="display: flex; align-items: center;">
+      By joining, you agree with our: 
+      <ion-button fill="clear" color="light" (click)="viewPrivacy()" style="z-index: 10; border-bottom: 1px solid #fff; --padding-end: 0; --padding-start: 0; margin-left: 10px;">Terms of Service</ion-button>
+    
+    </div>
+  </ion-item>
+  
+  <app-social-buttons [type]="'join'" [acceptedTC]="termsAgreed" (scClick)="join($event)"></app-social-buttons>
+
+  <div class="light-divider"></div>
+
+  <div style="width: 100%; display: flex; justify-content: center; align-items: center; padding: 1.5rem;">
+    <ion-button (click)="toLogin()" color="light" style="text-transform: none;">
+     Already A Member? &nbsp;<u>Login Here</u>
+    </ion-button>
+  </div>
+
+  <p class="title ion-padding-start ion-padding-end">
+     Learn more about our nonprofit at <a href="https://alumnimatch.org">www.alumnimatch.org</a>
+    <br><br>
+  </p>
+</ion-content>

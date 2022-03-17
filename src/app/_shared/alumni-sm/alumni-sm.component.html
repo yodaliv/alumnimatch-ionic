@@ -1,0 +1,9 @@
+<div *ngIf="user.id !== -1" class="sm-friend" (click)=" loggedIn ? viewProfile() : null">
+  <img [src]="user.avatar || 'assets/imgs/user.png'" width="48" height="48" class="sm-friend-avatar" onerror="this.onerror=null; this.src='assets/imgs/user.png';" alt="">
+  <ion-badge *ngIf="user && user.college && signedInUserCollege && signedInUserCollege.id !== user.college.id" appAM [theme]="user.college" class="different-alumni">
+    {{user.college.acronym ? user.college.acronym : 'O'}}
+  </ion-badge>
+  <div *ngIf="user.match" [theme]="user.college" appAM class="sm-friend-match-rate">{{user.match || 0}}%</div>
+  <ion-icon name="ios-radio-button-on" class="on-off-icon" [ngClass]="user?.online ? 'online' : 'offline'"></ion-icon>
+  <span *ngIf="type !== 'tag'" class="sm-friend-first-name">{{user.first_name || user.last_name}}</span>
+</div>

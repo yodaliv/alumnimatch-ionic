@@ -1,0 +1,20 @@
+{
+    "ImageIO.framework": 1,
+    "CoreLocation.framework": 2,
+    "AVFoundation.framework": 1,
+    "AddressBook.framework": 3,
+    "CoreText.framework": 3,
+    "SafariServices.framework": 2,
+    "Security.framework": 4,
+    "SystemConfiguration.framework": 4,
+    "libz.tbd": 2,
+    "libz.dylib": 2,
+    "WebKit.framework": 1,
+    "AuthenticationServices.framework": 2,
+    "Accelerate.framework": 1,
+    "Photos.framework": 1,
+    "QuartzCore.framework": 2,
+    "Accounts.framework": 1,
+    "Social.framework": 1,
+    "CoreData.framework": 1
+}

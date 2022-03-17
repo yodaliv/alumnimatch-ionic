@@ -1,0 +1,8 @@
+[{
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target" : { 
+        "namespace": "android_app", 
+        "package_name": "com.alumni.app",
+         "sha256_cert_fingerprints": ["06:79:23:BA:D5:5A:3C:D1:26:19:78:90:5D:57:94:89:4B:E4:65:CA:3E:55:40:4F:26:4C:F3:7D:86:AB:FE:62"] 
+    }
+}]

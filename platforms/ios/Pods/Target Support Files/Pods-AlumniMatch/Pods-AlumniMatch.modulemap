@@ -1,0 +1,6 @@
+framework module Pods_AlumniMatch {
+  umbrella header "Pods-AlumniMatch-umbrella.h"
+
+  export *
+  module * { export * }
+}

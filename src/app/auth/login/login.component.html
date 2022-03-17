@@ -1,0 +1,21 @@
+<ion-content class="ion-text-center">
+  <img class="logo" src="assets/imgs/login/animated_logo.gif">
+
+  <p class="title ion-padding-start ion-padding-end"><br>
+    Welcome Back to AlumniMatch! Have fun meeting other alumni today! Plese be safe and kind to others. Thank you.
+
+  <app-social-buttons [type]="'login'" (scClick)="login($event)"></app-social-buttons>
+
+  <div class="light-divider"></div>
+
+  <div style="width: 100%; display: flex; justify-content: center; align-items: center; padding: 1.5rem;">
+    <ion-button (click)="toJoin()" color="light" style="text-transform: none;">
+      Not a member? &nbsp; <u>Join Here</u>
+    </ion-button>
+  </div>
+
+  <p class="title ion-padding-start ion-padding-end">
+   
+   <br><br>
+ </p>
+</ion-content>

@@ -1,0 +1,12 @@
+<ion-list>
+  <ion-item style="cursor: pointer;" *ngFor="let user of usersProrate" (click)="tagUser(user)">
+    <app-alumni-sm style="transform: translateY(15%);" [type]="'tag'" [user]="user"></app-alumni-sm><p>{{user.first_name}} {{user.last_name}} - {{user.college.name}} </p>
+  </ion-item>
+  <ion-item *ngIf="usersProrate.length === 0">
+    <ion-label class="ion-text-wrap">
+      <ion-text>
+        <h3 style="font-weight: 500;">No results found</h3>
+      </ion-text>
+    </ion-label>
+  </ion-item>
+</ion-list>

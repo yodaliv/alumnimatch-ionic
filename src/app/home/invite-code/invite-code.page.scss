@@ -1,0 +1,42 @@
+ion-segment-button {
+    max-width: none !important;
+}
+.segments-toolbar {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+    --min-height: 24px;
+}
+ion-button {
+    height: 28px;
+    width: 100%;
+    span {
+        color: #fff;
+        font-weight: bold;
+    }
+}
+.load-more {
+    width: auto;
+}
+
+.userListBlock{
+    border-top: 1px solid #000;
+    margin-top: 15px;
+}
+
+.invited-count-wrap {
+    min-height: 50px;
+    padding: 0;
+    .invited-count {
+        min-height: 50px;
+        font-size: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 6px;
+        span {
+            margin-top: -2px;
+        }
+    }
+}

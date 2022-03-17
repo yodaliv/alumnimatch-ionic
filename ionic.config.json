@@ -1,0 +1,10 @@
+{
+  "name": "AlumniMatch",
+  "integrations": {
+    "cordova": {},
+    "capacitor": {
+      "enabled": true
+    }
+  },
+  "type": "angular"
+}

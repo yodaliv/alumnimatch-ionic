@@ -1,0 +1,100 @@
+PODS:
+  - AppAuth (1.4.0):
+    - AppAuth/Core (= 1.4.0)
+    - AppAuth/ExternalUserAgent (= 1.4.0)
+  - AppAuth/Core (1.4.0)
+  - AppAuth/ExternalUserAgent (1.4.0)
+  - FBSDKCoreKit (5.15.0):
+    - FBSDKCoreKit/Basics (= 5.15.0)
+    - FBSDKCoreKit/Core (= 5.15.0)
+  - FBSDKCoreKit/Basics (5.15.0)
+  - FBSDKCoreKit/Core (5.15.0):
+    - FBSDKCoreKit/Basics
+  - FBSDKLoginKit (5.15.0):
+    - FBSDKLoginKit/Login (= 5.15.0)
+  - FBSDKLoginKit/Login (5.15.0):
+    - FBSDKCoreKit (~> 5.0)
+  - FBSDKShareKit (5.15.0):
+    - FBSDKShareKit/Share (= 5.15.0)
+  - FBSDKShareKit/Share (5.15.0):
+    - FBSDKCoreKit (~> 5.0)
+  - GoogleSignIn (5.0.2):
+    - AppAuth (~> 1.2)
+    - GTMAppAuth (~> 1.0)
+    - GTMSessionFetcher/Core (~> 1.1)
+  - GoogleUtilities (6.7.2):
+    - GoogleUtilities/AppDelegateSwizzler (= 6.7.2)
+    - GoogleUtilities/Environment (= 6.7.2)
+    - GoogleUtilities/ISASwizzler (= 6.7.2)
+    - GoogleUtilities/Logger (= 6.7.2)
+    - GoogleUtilities/MethodSwizzler (= 6.7.2)
+    - GoogleUtilities/Network (= 6.7.2)
+    - "GoogleUtilities/NSData+zlib (= 6.7.2)"
+    - GoogleUtilities/Reachability (= 6.7.2)
+    - GoogleUtilities/SwizzlerTestHelpers (= 6.7.2)
+    - GoogleUtilities/UserDefaults (= 6.7.2)
+  - GoogleUtilities/AppDelegateSwizzler (6.7.2):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Network
+  - GoogleUtilities/Environment (6.7.2):
+    - PromisesObjC (~> 1.2)
+  - GoogleUtilities/ISASwizzler (6.7.2)
+  - GoogleUtilities/Logger (6.7.2):
+    - GoogleUtilities/Environment
+  - GoogleUtilities/MethodSwizzler (6.7.2):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/Network (6.7.2):
+    - GoogleUtilities/Logger
+    - "GoogleUtilities/NSData+zlib"
+    - GoogleUtilities/Reachability
+  - "GoogleUtilities/NSData+zlib (6.7.2)"
+  - GoogleUtilities/Reachability (6.7.2):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/SwizzlerTestHelpers (6.7.2):
+    - GoogleUtilities/MethodSwizzler
+  - GoogleUtilities/UserDefaults (6.7.2):
+    - GoogleUtilities/Logger
+  - GTMAppAuth (1.2.2):
+    - AppAuth/Core (~> 1.4)
+    - GTMSessionFetcher/Core (~> 1.5)
+  - GTMSessionFetcher/Core (1.5.0)
+  - OneSignal (2.16.5)
+  - PromisesObjC (1.2.12)
+
+DEPENDENCIES:
+  - FBSDKCoreKit (= 5.15.0)
+  - FBSDKLoginKit (= 5.15.0)
+  - FBSDKShareKit (= 5.15.0)
+  - GoogleSignIn (~> 5.0.2)
+  - GoogleUtilities (~> 6.6)
+  - OneSignal (= 2.16.5)
+
+SPEC REPOS:
+  trunk:
+    - AppAuth
+    - FBSDKCoreKit
+    - FBSDKLoginKit
+    - FBSDKShareKit
+    - GoogleSignIn
+    - GoogleUtilities
+    - GTMAppAuth
+    - GTMSessionFetcher
+    - OneSignal
+    - PromisesObjC
+
+SPEC CHECKSUMS:
+  AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  FBSDKCoreKit: 083ba8c8e37939c0b4c84250654c9be0aef0c2f8
+  FBSDKLoginKit: bd40354a96e4718765713ef225bc368f10dc395d
+  FBSDKShareKit: 23bad745329f966836f9a2493f86fc7c092b02e6
+  GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
+  GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
+  GTMAppAuth: ad5c2b70b9a8689e1a04033c9369c4915bfcbe89
+  GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
+  OneSignal: b72068b06b359f22e27404edee87338f4b68e783
+  PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
+
+PODFILE CHECKSUM: 85046d2b9f4482b26f2f668bf7a5e654a590b213
+
+COCOAPODS: 1.10.1
